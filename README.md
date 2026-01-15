@@ -38,8 +38,8 @@ The system handles complex relationships where a Team (Master) acts as a contain
 ## 🛠️ How to Run
 1.  **Database Setup:**
     * Open SSMS.
-    * Run the script located in `SQL/DDL.sql` to create the schema.
-    * Run `SQL/DML.sql` to populate initial data.
+    * Run the script located in `SQL/sqlfile` to create the schema.
+    * Run `SQL_File` to populate initial data.
 2.  **Application Config:**
     * Clone the repository.
     * Open the solution in Visual Studio.
