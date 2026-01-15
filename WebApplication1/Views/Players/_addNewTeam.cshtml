@@ -1,0 +1,10 @@
+﻿@model WebApplication1.Models.Team
+
+<div class="row mb-2">
+    <div class="col-12">
+        <div class="input-group" style="max-width: 500px;">
+            @Html.DropDownListFor(x => x.TeamId, ViewBag.teams as SelectList, "--- Select Team ---", new { @class = "form-select" })
+            <button type="button" class="btn btn-danger" id="btnDeleteTeam">Remove</button>
+        </div>
+    </div>
+</div>

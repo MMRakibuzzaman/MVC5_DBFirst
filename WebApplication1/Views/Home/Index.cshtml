@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Player-Team Associations";
+}
+
+<div class="p-5 mb-4 bg-white rounded-3 border border-2 border-primary shadow-sm">
+    <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold text-primary">Multi-Team Player System</h1>
+        <p class="col-md-8 fs-4 text-secondary">
+            A Master-Detail system designed to manage players who are contractually assigned to multiple teams Over the history of Bangladesh Premier League.
+        </p>
+        <div class="d-flex gap-2">
+            <a href="@Url.Action("Index", "Players")" class="btn btn-primary btn-lg">View Assignments</a>
+            <a href="@Url.Action("Create", "Players")" class="btn btn-outline-primary btn-lg">Assign Player to Teams</a>
+        </div>
+    </div>
+</div>
+
+<div class="row text-center mb-5">
+    <div class="col-md-6">
+        <div class="card border-primary mb-3">
+            <div class="card-header bg-primary text-white">Master Data</div>
+            <div class="card-body">
+                <h2 class="card-title">@ViewBag.TotalPlayers</h2>
+                <p class="card-text text-muted">Total Players</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-dark mb-3">
+            <div class="card-header bg-dark text-white">Detail Data</div>
+            <div class="card-body">
+                <h2 class="card-title">@ViewBag.TotalTeams</h2>
+                <p class="card-text text-muted">Available Teams</p>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,127 @@
+﻿@model WebApplication1.Models.ViewModels.PlayerVM
+@{
+    ViewBag.Title = "Edit Player";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-5 display-6 fw-bold">Edit Player Details</h2>
+
+    @using (Ajax.BeginForm(new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "msg",
+        OnComplete = "clearAll"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.PlayerId)
+        @Html.HiddenFor(x => x.Picture)
+
+        <div class="row">
+            <div class="col-md-6 border-end pe-5">
+                <h4 class="mb-4 text-secondary">Personal Information</h4>
+
+                <div class="mb-3">
+                    @Html.LabelFor(x => x.PlayerName, new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(x => x.PlayerName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.PlayerName, "", new { @class = "text-danger small" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(x => x.BirthDate, new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(x => x.BirthDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(x => x.BirthDate, "", new { @class = "text-danger small" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(x => x.Age, new { @class = "form-label fw-bold" })
+                    @Html.TextBoxFor(x => x.Age, new { @class = "form-control", type = "number" })
+                    @Html.ValidationMessageFor(x => x.Age, "", new { @class = "text-danger small" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(x => x.PictureFile, new { @class = "form-label fw-bold" })
+                    <div class="d-flex align-items-center">
+                        @Html.TextBoxFor(x => x.PictureFile, new { @class = "form-control me-3", type = "file" })
+                        <img src="@Model.Picture" width="40" height="40" class="rounded-circle border" title="Current Image" />
+                    </div>
+                    @Html.ValidationMessageFor(x => x.PictureFile, "", new { @class = "text-danger small" })
+                </div>
+
+                <div class="mb-3 pt-2">
+                    <div class="form-check">
+                        @Html.CheckBoxFor(x => x.IsCaptain, new { @class = "form-check-input" })
+                        <label class="form-check-label fw-bold" for="IsCaptain">Promote to Captain?</label>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="@Url.Action("Index","Players")" class="btn btn-secondary px-5 btn-lg">Back to list</a>
+                    <button type="submit" class="btn btn-primary px-5 btn-lg">Update Player</button>
+                    <div id="msg" class="mt-2"></div>
+                </div>
+            </div>
+
+            <div class="col-md-6 ps-5">
+                <div class="d-flex align-items-center justify-content-between mb-4" style="max-width: 500px;">
+                    <h4 class="text-secondary mb-0">Team List</h4>
+                    <button id="btnPlus" class="btn btn-sm btn-primary fw-bold">+ Add Team</button>
+                </div>
+
+                <div id="teamContainer">
+                    @foreach (var item in Model.TeamList)
+                    {
+                        @Html.Action("AddNewTeam", "Players", new { id = item })
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#form0").attr("enctype", "multipart/form-data");
+
+            $("#BirthDate").change(function () {
+                var dob = $(this).val();
+                if (dob != "") {
+                    var birthDate = new Date(dob);
+                    var today = new Date();
+                    var age = today.getFullYear() - birthDate.getFullYear();
+                    var m = today.getMonth() - birthDate.getMonth();
+                    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                    }
+                    $("#Age").val(age);
+                }
+            });
+
+            $.validator.addMethod("checkDate", function (value, element) {
+                if (value === "") return true;
+                var selectedDate = new Date(value);
+                var today = new Date();
+                today.setHours(0, 0, 0, 0);
+                return selectedDate <= today;
+            }, "Date cannot be in the future.");
+
+            $("#BirthDate").rules("add", { checkDate: true });
+
+            $(document).on("click", "#btnDeleteTeam", function (e) {
+                e.preventDefault();
+                $(this).closest(".row").remove();
+            });
+
+            window.clearAll = function () {
+                $("#form0").trigger("reset");
+            }
+        });
+    </script>
+}
+

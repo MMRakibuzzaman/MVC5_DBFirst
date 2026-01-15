@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="R67_EviTestDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="PlayerEntries">
+          <Key>
+            <PropertyRef Name="PlayerEntryId" />
+          </Key>
+          <Property Name="PlayerEntryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="TeamId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BirthDate" Type="date" Nullable="false" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="Picture" Type="nvarchar(max)" />
+          <Property Name="IsCaptain" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Teams">
+          <Key>
+            <PropertyRef Name="TeamId" />
+          </Key>
+          <Property Name="TeamId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeamName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__BookingEn__Playe__3B75D760">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="PlayerEntries" Type="Self.PlayerEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="PlayerEntries">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookingEn__SpotI__3C69FB99">
+          <End Role="Teams" Type="Self.Teams" Multiplicity="1" />
+          <End Role="PlayerEntries" Type="Self.PlayerEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamId" />
+            </Principal>
+            <Dependent Role="PlayerEntries">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="R67_EviTestDBModelStoreContainer">
+          <EntitySet Name="PlayerEntries" EntityType="Self.PlayerEntries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teams" EntityType="Self.Teams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BookingEn__Playe__3B75D760" Association="Self.FK__BookingEn__Playe__3B75D760">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="PlayerEntries" EntitySet="PlayerEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookingEn__SpotI__3C69FB99" Association="Self.FK__BookingEn__SpotI__3C69FB99">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="PlayerEntries" EntitySet="PlayerEntries" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="R67_EviTestDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="PlayerEntry">
+          <Key>
+            <PropertyRef Name="PlayerEntryId" />
+          </Key>
+          <Property Name="PlayerEntryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="TeamId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Player" Relationship="Self.FK__BookingEn__Playe__3B75D760" FromRole="PlayerEntries" ToRole="Players" />
+          <NavigationProperty Name="Team" Relationship="Self.FK__BookingEn__SpotI__3C69FB99" FromRole="PlayerEntries" ToRole="Teams" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="Picture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsCaptain" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PlayerEntries" Relationship="Self.FK__BookingEn__Playe__3B75D760" FromRole="Players" ToRole="PlayerEntries" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="TeamId" />
+          </Key>
+          <Property Name="TeamId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeamName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PlayerEntries" Relationship="Self.FK__BookingEn__SpotI__3C69FB99" FromRole="Teams" ToRole="PlayerEntries" />
+        </EntityType>
+        <Association Name="FK__BookingEn__Playe__3B75D760">
+          <End Role="Players" Type="Self.Player" Multiplicity="1" />
+          <End Role="PlayerEntries" Type="Self.PlayerEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="PlayerEntries">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookingEn__SpotI__3C69FB99">
+          <End Role="Teams" Type="Self.Team" Multiplicity="1" />
+          <End Role="PlayerEntries" Type="Self.PlayerEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamId" />
+            </Principal>
+            <Dependent Role="PlayerEntries">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EviTestDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PlayerEntries" EntityType="Self.PlayerEntry" />
+          <EntitySet Name="Players" EntityType="Self.Player" />
+          <EntitySet Name="Teams" EntityType="Self.Team" />
+          <AssociationSet Name="FK__BookingEn__Playe__3B75D760" Association="Self.FK__BookingEn__Playe__3B75D760">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="PlayerEntries" EntitySet="PlayerEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookingEn__SpotI__3C69FB99" Association="Self.FK__BookingEn__SpotI__3C69FB99">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="PlayerEntries" EntitySet="PlayerEntries" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="R67_EviTestDBModelStoreContainer" CdmEntityContainer="EviTestDbContext">
+          <EntitySetMapping Name="PlayerEntries">
+            <EntityTypeMapping TypeName="R67_EviTestDBModel.PlayerEntry">
+              <MappingFragment StoreEntitySet="PlayerEntries">
+                <ScalarProperty Name="PlayerEntryId" ColumnName="PlayerEntryId" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="TeamId" ColumnName="TeamId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="R67_EviTestDBModel.Player">
+              <MappingFragment StoreEntitySet="Players">
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="PlayerName" ColumnName="PlayerName" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="IsCaptain" ColumnName="IsCaptain" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teams">
+            <EntityTypeMapping TypeName="R67_EviTestDBModel.Team">
+              <MappingFragment StoreEntitySet="Teams">
+                <ScalarProperty Name="TeamId" ColumnName="TeamId" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

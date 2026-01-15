@@ -1,0 +1,44 @@
+﻿@model IEnumerable<WebApplication1.Models.Team>
+@{
+    ViewBag.Title = "Team List";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="display-6 fw-bold text-primary">Team Roster</h2>
+        <a href="@Url.Action("Create")" class="btn btn-primary shadow-sm">
+            + Create New Team
+        </a>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title fw-bold text-dark">@Html.DisplayFor(modelItem => item.TeamName)</h5>
+                            <p class="card-text text-muted small">
+                                Team ID: #@Html.DisplayFor(modelItem => item.TeamId)
+                            </p>
+
+                            @if (item.PlayerEntries != null)
+                            {
+                                <span class="badge bg-light text-dark border">
+                                    @item.PlayerEntries.Count Members
+                                </span>
+                            }
+                        </div>
+
+                        <div class="mt-4 text-end">
+                            <a href="@Url.Action("Delete", new { id=item.TeamId })" class="btn btn-outline-danger btn-sm px-3">
+                                Delete Team
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
